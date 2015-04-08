@@ -38,6 +38,10 @@ class FavHelper extends AppHelper {
      */
     public function faved($key, $modelId){
         $Fav = ClassRegistry::init('Fav.Fav');
-        return $Fav->faved($key, $modelId);
+        try {
+            return $Fav->faved($key, $modelId);
+        } catch (FavException $e) {
+            return false;
+        }
     }
 }
