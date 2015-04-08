@@ -121,4 +121,39 @@ class Fav extends FavAppModel {
         }
         return $fav['Fav']['id'];
     }
+
+    /**
+     * afterFind
+     *
+     */
+    public function afterFind($data, $primary = false){
+        $models = array();
+        foreach ($data as $fav) {
+            $model = $fav['Fav']['model'];
+            if (empty($models[$model])) {
+                $models[$model] = array();
+                $models[$model][] = $fav['Fav']['model_id'];
+            }
+        }
+
+        $modelData = array();
+        foreach ($models as $model => $ids) {
+            if (empty($modelData[$model])) {
+                $modelData[$model] = array();
+            }
+            $Model = ClassRegistry::init($model);
+            $results = $Model->find('all', array('conditions' => array(
+                $model.'.id' => $ids
+            )));
+            $modelData[$model] = Hash::combine($results, '{n}.'.$model.'.id', '{n}.'.$model);
+        }
+
+        foreach ($data as $key => $fav) {
+            $model = $fav['Fav']['model'];
+            $modelId = $fav['Fav']['model_id'];
+            $data[$key][$model] = $modelData[$model][$modelId];
+        }
+
+        return $data;
+    }
 }
