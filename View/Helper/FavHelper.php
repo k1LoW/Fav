@@ -20,6 +20,19 @@ class FavHelper extends AppHelper {
     }
 
     /**
+     * urlDrop
+     *
+     */
+    public function urlDrop($key, $modelId, $full = false){
+        return $this->Html->url(array(
+            'plugin' => 'fav',
+            'controller' => 'fav',
+            'action' => 'drop',
+            $key, $modelId
+        ), $full);
+    }
+
+    /**
      * faved
      *
      */

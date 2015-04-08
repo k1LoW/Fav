@@ -18,7 +18,7 @@ class FavController extends FavAppController {
 
         try {
             $result = $this->Fav->append($key, $modelId);
-            $message = Configure::read('Fav.flashMessage');
+            $message = Configure::read('Fav.flashMessage.append');
             if ($message) {
                 $this->Session->setFlash(
                     $message,
@@ -62,6 +62,8 @@ class FavController extends FavAppController {
                     Configure::read('Fav.setFlashParams.error'));
             }
         }
+
+        $this->redirect($this->request->referer());
     }
     
     /**

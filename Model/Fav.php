@@ -128,12 +128,16 @@ class Fav extends FavAppModel {
      */
     public function afterFind($data, $primary = false){
         $models = array();
+        if (!empty($data[0][0])) {
+            return $data;
+        }
+        
         foreach ($data as $fav) {
             $model = $fav['Fav']['model'];
             if (empty($models[$model])) {
                 $models[$model] = array();
-                $models[$model][] = $fav['Fav']['model_id'];
             }
+            $models[$model][] = $fav['Fav']['model_id'];
         }
 
         $modelData = array();
@@ -145,13 +149,13 @@ class Fav extends FavAppModel {
             $results = $Model->find('all', array('conditions' => array(
                 $model.'.id' => $ids
             )));
-            $modelData[$model] = Hash::combine($results, '{n}.'.$model.'.id', '{n}.'.$model);
+            $modelData[$model] = Hash::combine($results, '{n}.'.$model.'.id', '{n}');
         }
 
         foreach ($data as $key => $fav) {
             $model = $fav['Fav']['model'];
             $modelId = $fav['Fav']['model_id'];
-            $data[$key][$model] = $modelData[$model][$modelId];
+            $data[$key] = Hash::merge($modelData[$model][$modelId], $data[$key]);
         }
 
         return $data;
