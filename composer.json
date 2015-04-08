@@ -1,0 +1,21 @@
+{
+    "name": "k1low/fav",
+    "description": "Fav",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "favorite"],
+    "homepage": "https://github.com/k1LoW/Fav",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ken'ichiro Oyama",
+            "homepage": "https://github.com/k1LoW",
+            "role": "Author"
+        }
+    ],
+    "require": {
+        "composer/installers": "*"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "3.7.*"
+	}
+}
